@@ -4,8 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>C:/cppprojects/Netbeans8/ED1/parameters_ED1.h</itemPath>
-      <itemPath>C:/cppprojects/Netbeans8/ED1/utilities.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,6 +13,8 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>ED1.cpp</itemPath>
+      <itemPath>C:/cppprojects/Netbeans8/ED1/parameters_ED1.h</itemPath>
+      <itemPath>C:/cppprojects/Netbeans8/ED1/utilities.h</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
