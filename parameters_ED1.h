@@ -40,6 +40,6 @@ const int    NSTEPS          = 50; // For the binary search (ret. time)
 const int    TIMESTEPS       = 1000;
 const double T_INCREMENT     = 5.e-11;
 const double GAMMA           = 1. / 2.2;
-const std::string OUTPUT_DIR = "C:/cppprojects/Netbeans8/ED1/output";
+const std::string OUTPUT_DIR = "C:/output/electrodynamics";
 
 #endif
