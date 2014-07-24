@@ -10,11 +10,17 @@
  */
 
 #include <cstdlib>
+#include <complex>
 #include "parameters_ED1.h"
 #include "utilities.h"
 #include "vector3.h"
 
 using namespace std;
+
+// DEFINITIONS
+//////////////
+
+#define _i_ complex<double>(0., 1.)
 
 // FUNCTIONS
 ////////////
@@ -106,7 +112,7 @@ int main() {
                 //PHI = 0.;               
                 //if (sqrt(dot(R,R)) < c * time){
                 if (1){
-                    PHI = CHARGE / (sqrt(dot(R,R)) - dot(R, velocity(tau))/c);
+                    PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
                 }
                 
                 // VECTOR POTENTIAL, A
@@ -117,10 +123,11 @@ int main() {
                 // Set RGB at this location
                 
                 double factor = 7.;
+                double color = norm(A);
                 
-                RED = factor * PHI;
-                GRE = factor * PHI;
-                BLU = factor * PHI;
+                RED = factor * color;
+                GRE = factor * color;
+                BLU = factor * color;
 
                 RED = 255. * pow(RED, GAMMA);
                 GRE = 255. * pow(GRE, GAMMA);
