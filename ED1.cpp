@@ -106,8 +106,8 @@ int main() {
                 tau = ret_time(time, r);               
                 R = r - position(tau);      
                 
-                // SCALAR POTENTIAL, PHI
-                ////////////////////////
+                // LW SCALAR POTENTIAL, PHI
+                ///////////////////////////
                 
                 //PHI = 0.;               
                 //if (sqrt(dot(R,R)) < c * time){
@@ -115,23 +115,26 @@ int main() {
                     PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
                 }
                 
-                // VECTOR POTENTIAL, A
-                //////////////////////
+                // LW VECTOR POTENTIAL, A
+                /////////////////////////
                 
                 A = velocity(tau) / c * PHI;
                 
-                // FOURIER-MACHINERY APPROXIMATION
-                //////////////////////////////////
+                // FOURIER SCALAR POTENTIAL PHI_fourier
+                ///////////////////////////////////////
                 
-                double k = 0.62875350658 / (2. * M_PI);
+                // FOURIER VECTOR POTENTIAL A_fourier
+                /////////////////////////////////////
+                
+                double k = FREQUENCY / c;
                 vector3 xhat = vector3(1., 0., 0.);
                 complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - FREQUENCY * time)));
                 double realpart = complexterm.real();
                 A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;
                 
                 // Set RGB at this location               
-                double factor = 56.;
-                double color = norm(A_fourier);
+                double factor = 28.;
+                double color = norm(A);
                 
                 RED = factor * color;
                 GRE = factor * color;
