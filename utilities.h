@@ -25,7 +25,7 @@
 using namespace std;
 
 void complex_to_rgb(const complex<double> C, double RGB[]){
-    // OPTION 2: PLOT THE FULL COMPLEX NUMBER  
+    // PLOT THE COMPLEX NUMBER C  
     double magnitude = abs(C);
     double phase = arg(C);
 
@@ -58,7 +58,6 @@ void complex_to_rgb(const complex<double> C, double RGB[]){
         { RGB[0] = Ch; RGB[1] = 0.; RGB[2] = X; }
     else 
         { RGB[0] = 0.; RGB[1] = 0.; RGB[2] = 0.; }
-
     // END <- material from Wikipedia
 }
 
