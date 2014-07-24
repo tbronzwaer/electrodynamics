@@ -22,14 +22,14 @@ class vector3{
         vector3(double x_,double y_, double z_)
                 :x(x_), y(y_), z(z_)
                 {};
-        double dot(const vector3& A, const vector3& B);
-        double norm(const vector3& A);
-        vector3 cross(const vector3& A, const vector3& B);
-        double separation(const vector3& A, const vector3& B);
-        vector3 operator+(const vector3 B); 
-        vector3 operator-(const vector3 B); 
-        vector3 operator*(const double a); 
-        vector3 operator/(const double a); 
+        double  dot       (const vector3& A, const vector3& B);
+        double  norm      (const vector3& A);
+        vector3 cross     (const vector3& A, const vector3& B);
+        double  separation(const vector3& A, const vector3& B);
+        vector3 operator +(const vector3 B); 
+        vector3 operator -(const vector3 B); 
+        vector3 operator *(const double a); 
+        vector3 operator /(const double a); 
 };
 
 double dot(const vector3& A, const vector3& B){
