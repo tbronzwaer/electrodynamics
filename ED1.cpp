@@ -43,7 +43,8 @@ using namespace std;
 // DEFINITIONS
 //////////////
 
-#define _i_ complex<double>(0., 1.)
+#define _i_ complex<double>(0., 1.) // Imaginary unit
+#define c   2.99792458e10           // Speed of light, cm/s
 
 // FUNCTIONS
 ////////////

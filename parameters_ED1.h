@@ -19,12 +19,6 @@
 
 using namespace std;
 
-// CONSTANTS
-////////////
-
-const double e               = 4.80320425e-10; // statcoulomb
-const double c               = 2.99792458e10;  // cm/s
-
 // PARAMETERS
 /////////////
 
