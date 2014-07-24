@@ -12,12 +12,9 @@
 #include <cstdlib>
 #include "parameters_ED1.h"
 #include "utilities.h"
+#include "vector3.h"
 
 using namespace std;
-
-struct vector3{
-    double x, y, z;
-};
 
 // FUNCTIONS
 ////////////
@@ -44,18 +41,6 @@ vector3 velocity(double t){
     V.y = 0.;
     V.z = 0.;
     return V;
-}
-
-double dot(const vector3& A, const vector3& B){
-    return A.x * B.x + A.y * B.y + A.z * B.z;
-}
-
-vector3 cross(const vector3& A, const vector3& B){
-    vector3 C;
-    C.x = A.y * B.z - A.z * B.y;
-    C.y = A.z * B.x - A.x * B.z;
-    C.z = A.x * B.y - A.y * B.x;
-    return C;
 }
 
 // Returns the distance between the points A and B
@@ -112,6 +97,7 @@ int main() {
     //double time = 1.5e-7;
     double time = 0.;
     double PHI = 0.;
+    vector3 A;
     int q = 0; //img counter
     
     // for all times
@@ -128,12 +114,20 @@ int main() {
                 
                 tau = ret_time(time, r);               
                 R = A_to_B(position(tau), r);      
-                   
+                
+                // SCALAR POTENTIAL, PHI
+                ////////////////////////
+                
                 //PHI = 0.;               
                 //if (sqrt(dot(R,R)) < c * time){
                 if (1){
                     PHI = CHARGE / (sqrt(dot(R,R)) - dot(R, velocity(tau))/c);
                 }
+                
+                // VECTOR POTENTIAL, A
+                //////////////////////
+                
+                A = velocity(tau) / c * PHI;
                 
                 // Set RGB at this location
                 
