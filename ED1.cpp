@@ -27,7 +27,7 @@ using namespace std;
 
 vector3 position(double t){
     vector3 X;
-    X.x = SCALE * AMPLITUDE * cos(FREQUENCY * t); // Horiz Osc
+    X.x = AMPLITUDE * cos(FREQUENCY * t); // Horiz Osc
     //X.x = 0.5 * ACCELERATION * t * t; // Linear
     //X.y = SCALE * AMPLITUDE * sin(FREQUENCY * t); // Vert Osc
     //X.x = 0.;
@@ -39,7 +39,7 @@ vector3 position(double t){
 
 vector3 velocity(double t){
     vector3 V;
-    V.x = -SCALE * FREQUENCY * AMPLITUDE * sin(FREQUENCY * t); // Horiz Osc
+    V.x = -FREQUENCY * AMPLITUDE * sin(FREQUENCY * t); // Horiz Osc
     //V.x = ACCELERATION * t; // Linear
     //V.y = SCALE * FREQUENCY * AMPLITUDE * cos(FREQUENCY * t); // Vert Osc
     //V.x = 0.;
@@ -84,9 +84,9 @@ int main() {
     double RED,GRE,BLU;
     vector3 r, R;
     //double time = 1.5e-7;
-    double time = 0.;
+    double time = 0.0001;
     double PHI = 0.;
-    vector3 A;
+    vector3 A, A_fourier;
     int q = 0; //img counter
     
     // for all times
@@ -120,10 +120,17 @@ int main() {
                 
                 A = velocity(tau) / c * PHI;
                 
+                double k = 0.62875350658 / (2. * M_PI);
+                vector3 xhat = vector3(1., 0., 0.);
+                complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - FREQUENCY * time)));
+                double cterm = complexterm.real();
+                A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * cos(FREQUENCY * time)
+                        * cterm;
+                
                 // Set RGB at this location
                 
-                double factor = 7.;
-                double color = norm(A);
+                double factor = 56.;
+                double color = norm(A_fourier);
                 
                 RED = factor * color;
                 GRE = factor * color;

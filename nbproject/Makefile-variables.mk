@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=MinGW-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/MinGW-Windows
-CND_ARTIFACT_NAME_Debug=ed1
-CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW-Windows/ed1
+CND_ARTIFACT_NAME_Debug=electrodynamics
+CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW-Windows/electrodynamics
 CND_PACKAGE_DIR_Debug=dist/Debug/MinGW-Windows/package
-CND_PACKAGE_NAME_Debug=ed1.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/MinGW-Windows/package/ed1.tar
+CND_PACKAGE_NAME_Debug=electrodynamics.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/MinGW-Windows/package/electrodynamics.tar
 # Release configuration
 CND_PLATFORM_Release=MinGW-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/MinGW-Windows
-CND_ARTIFACT_NAME_Release=ed1
-CND_ARTIFACT_PATH_Release=dist/Release/MinGW-Windows/ed1
+CND_ARTIFACT_NAME_Release=electrodynamics
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW-Windows/electrodynamics
 CND_PACKAGE_DIR_Release=dist/Release/MinGW-Windows/package
-CND_PACKAGE_NAME_Release=ed1.tar
-CND_PACKAGE_PATH_Release=dist/Release/MinGW-Windows/package/ed1.tar
+CND_PACKAGE_NAME_Release=electrodynamics.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW-Windows/package/electrodynamics.tar
 #
 # include compiler specific variables
 #
