@@ -1,8 +1,12 @@
 /* 
  * File:   vector3.h
- * Author: Thomas
+ * Author: Thomas Bronzwaer
  *
  * Created on July 24, 2014, 11:01 AM
+ * 
+ * This is a fairly 'vanilla' implementation of ordinary Euclidean three-
+ * vectors, including the overloaded operators +, -, *, / to handle them more
+ * conveniently as well as the dot- and cross products.
  */
 
 #ifndef VECTOR3_H
@@ -11,10 +15,14 @@
 class vector3{
     public:
         double x, y, z;
-    vector3 operator+(const vector3 B); 
-    vector3 operator-(const vector3 B); 
-    vector3 operator*(const double a); 
-    vector3 operator/(const double a); 
+        vector3(){};
+        vector3(double x_,double y_, double z_)
+                :x(x_), y(y_), z(z_)
+                {};
+        vector3 operator+(const vector3 B); 
+        vector3 operator-(const vector3 B); 
+        vector3 operator*(const double a); 
+        vector3 operator/(const double a); 
 };
 
 vector3 vector3::operator+(const vector3 B){
@@ -61,5 +69,13 @@ vector3 cross(const vector3& A, const vector3& B){
     return C;
 }
 
-#endif	/* VECTOR3_H */
+// Returns the distance between the points A and B
+double separation(vector3 A, vector3 B){
+    vector3 C;
+    C.x = A.x - B.x;
+    C.y = A.y - B.y;
+    C.z = A.z - B.z;
+    return sqrt(dot(C, C));
+}
 
+#endif
