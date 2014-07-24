@@ -46,7 +46,6 @@ vector3 cross(const vector3& A, const vector3& B){
                    A.x * B.y - A.y * B.x);
 }
 
-// Returns the distance between the points A and B
 double separation(vector3 A, vector3 B){
     vector3 C;
     C.x = A.x - B.x;
