@@ -1,6 +1,6 @@
 /* 
  * File:   parameters_ED1.h
- * Author: Thomas
+ * Author: Thomas Bronzwaer
  *
  * Created on July 7, 2014, 4:03 PM
  * 
