@@ -120,15 +120,16 @@ int main() {
                 
                 A = velocity(tau) / c * PHI;
                 
+                // FOURIER-MACHINERY APPROXIMATION
+                //////////////////////////////////
+                
                 double k = 0.62875350658 / (2. * M_PI);
                 vector3 xhat = vector3(1., 0., 0.);
                 complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - FREQUENCY * time)));
-                double cterm = complexterm.real();
-                A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * cos(FREQUENCY * time)
-                        * cterm;
+                double realpart = complexterm.real();
+                A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;
                 
-                // Set RGB at this location
-                
+                // Set RGB at this location               
                 double factor = 56.;
                 double color = norm(A_fourier);
                 
