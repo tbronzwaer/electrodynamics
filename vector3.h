@@ -1,8 +1,8 @@
 /* 
- * File:   vector3.h
+ * File:   vector3.h (NOTE: only compatible with C++)
  * Author: Thomas Bronzwaer
  * 
- * This is a no-frills implementation of ordinary Euclidean three-vectors, 
+ * This is a no-frills C++ implementation of ordinary Euclidean three-vectors, 
  * including the overloaded operators +, -, *, / to handle them more
  * conveniently as well as the norm, the dot- and cross products, and a function
  * that returns the distance between two points specified by vectors A & B.
