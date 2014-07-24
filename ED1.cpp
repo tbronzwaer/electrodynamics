@@ -6,6 +6,9 @@
  * This C++ program creates a numerical plot of the Lienard-Wiechert potential
  * due to a moving charge (x(t) and v(t) specified by user).
  * 
+ * The same field is also computed using a Fourier method (long-wavelength
+ * approximation).
+ * 
  * Units are cgs-Gauss. 
  */
 
