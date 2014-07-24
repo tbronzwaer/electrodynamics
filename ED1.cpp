@@ -43,23 +43,6 @@ vector3 velocity(double t){
     return V;
 }
 
-// Returns the distance between the points A and B
-double separation(vector3 A, vector3 B){
-    vector3 C;
-    C.x = A.x - B.x;
-    C.y = A.y - B.y;
-    C.z = A.z - B.z;
-    return sqrt(dot(C, C));
-}
-
-vector3 A_to_B(vector3 A, vector3 B){   
-    vector3 C;
-    C.x = B.x - A.x;
-    C.y = B.y - A.y;
-    C.z = B.z - A.z;
-    return C;
-}
-
 // Returns the retarded time at the current position/time. 
 // Uses binary search between 0 and t.
 double ret_time(double t, vector3 r){
@@ -105,6 +88,8 @@ int main() {
         // For all pixels...
         for (int j = 0; j < HEIGHT; j++){
             for (int i = 0; i < WIDTH; i++){
+                
+                // COMPUTE POSITION & RETARDED TIME
 
                 // Position coordinates at each pixel center
                 r.x = SCALE * ((double) i + .5 - WIDTH / 2.);
@@ -113,7 +98,7 @@ int main() {
                 r.z = 0.;                
                 
                 tau = ret_time(time, r);               
-                R = A_to_B(position(tau), r);      
+                R = r - position(tau);      
                 
                 // SCALAR POTENTIAL, PHI
                 ////////////////////////
