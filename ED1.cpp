@@ -158,8 +158,8 @@ int main() {
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
-                double factor = 28.;
-                double color = norm(A);
+                double factor = 6.e10;
+                double color = PHI;
                 
                 RED = factor * color;
                 GRE = factor * color;

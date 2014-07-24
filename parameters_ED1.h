@@ -30,12 +30,12 @@ const double c               = 2.99792458e10;  // cm/s
 
 const int    WIDTH           = 800;
 const int    HEIGHT          = 600;
-const double SCALE           = 0.2; // Scale factor
+const double SCALE           = 10.0; // Scale factor
 const double VELOCITY        = 2.5e10;
 const double ACCELERATION    = 4.e18; // Used for linear acceleration
 const double FREQUENCY       = 3.e9;
 const double AMPLITUDE       = 1.0;
-const double CHARGE          = 1.0;
+const double CHARGE          = 4.80320425e-10; // Elementary charge, statcoulomb
 const int    NSTEPS          = 50; // For the binary search (ret. time)
 const int    TIMESTEPS       = 1000;
 const double T_INCREMENT     = 5.e-11;
