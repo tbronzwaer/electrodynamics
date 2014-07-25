@@ -150,7 +150,8 @@ int main() {
                 // FOURIER VECTOR POTENTIAL (A_fourier)
                 ///////////////////////////////////////
                 
-                complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - FREQUENCY * time)));
+                complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - 
+                                              FREQUENCY * time)));
                 double realpart = complexterm.real();
                 A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;
                 
