@@ -7,7 +7,6 @@
  * NOTES ON cgs-Gauss UNITS:
  * 
  * Units are centimeter, gram, second
- * 
  */
 
 #ifndef PARAMETERS_ED1_H
