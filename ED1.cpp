@@ -158,7 +158,7 @@ int main() {
                 /////////////////////
                 
                 if (j == 400){
-                    fprintf(file, "\n%.8e %.8e", r.x, norm(A));
+                    fprintf(file, "\n%.8e %.8e", r.x, norm(A_fourier));
                 }
                 
                 // COMPUTE PIXEL COLOR (PLOT)
