@@ -99,11 +99,9 @@ double ret_time(double t, vector3 r){
 int main() {
     
     // RGB array for creating images
-    unsigned char* data = new unsigned char[WIDTH * HEIGHT * 3];
-    
+    unsigned char* data = new unsigned char[WIDTH * HEIGHT * 3];   
     FILE *file;
     file = fopen("C:/output/output.dat", "w");
-    
   
     // MAIN COMPUTATION
     ///////////////////
