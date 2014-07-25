@@ -102,19 +102,21 @@ int main() {
     unsigned char* data = new unsigned char[WIDTH * HEIGHT * 3];   
     FILE *file;
     file = fopen("C:/output/output.dat", "w");
-  
-    // MAIN COMPUTATION
-    ///////////////////
     
     double k = FREQUENCY / c;           // Wave number
     vector3 xhat = vector3(1., 0., 0.);
     double X, Y, tau;
     vector3 r, R;
-    double time = 0.0001;
     double PHI, PHI_fourier;
     vector3 A, A_fourier;
     int q = 0;                          // Image counter
     double RED,GRE,BLU;
+    
+    // Set initial time
+    double time = 0.0001;
+    
+    // MAIN COMPUTATION
+    ///////////////////
     
     // for all time steps...
     for (int t = 0; t < TIMESTEPS; t++){
@@ -135,13 +137,13 @@ int main() {
                 tau = ret_time(time, r);               
                 R = r - position(tau);      
                 
-                // LW SCALAR POTENTIAL (PHI)
-                ////////////////////////////
+                // COMPUTE LIÉNARD-WIECHERT SCALAR POTENTIAL (PHI)
+                //////////////////////////////////////////////////
 
                 PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
 
-                // LW VECTOR POTENTIAL (A)
-                //////////////////////////
+                // COMPUTE LIÉNARD-WIECHERT VECTOR POTENTIAL (A)
+                ////////////////////////////////////////////////
                 
                 A = velocity(tau) / c * PHI;
                 
