@@ -100,26 +100,33 @@ int main() {
     
     // RGB array for creating images
     unsigned char* data = new unsigned char[WIDTH * HEIGHT * 3];
+    
+    FILE *file;
+    file = fopen("C:/output/output.dat", "w");
+    
   
     // MAIN COMPUTATION
     ///////////////////
     
+    double k = FREQUENCY / c;           // Wave number
+    vector3 xhat = vector3(1., 0., 0.);
     double X, Y, tau;
-    double RED,GRE,BLU;
     vector3 r, R;
-    //double time = 1.5e-7;
     double time = 0.0001;
-    double PHI = 0.;
+    double PHI, PHI_fourier;
     vector3 A, A_fourier;
-    int q = 0; //img counter
+    int q = 0;                          // Image counter
+    double RED,GRE,BLU;
     
     // for all time steps...
     for (int t = 0; t < TIMESTEPS; t++){
+        
         // For all pixels...
         for (int j = 0; j < HEIGHT; j++){
             for (int i = 0; i < WIDTH; i++){
                 
                 // COMPUTE POSITION & RETARDED TIME
+                ///////////////////////////////////
 
                 // Position coordinates at each pixel center
                 r.x = SCALE * ((double) i + .5 - WIDTH / 2.);
@@ -132,35 +139,33 @@ int main() {
                 
                 // LW SCALAR POTENTIAL (PHI)
                 ////////////////////////////
-                
-                //PHI = 0.;               
-                //if (sqrt(dot(R,R)) < c * time){
-                if (1){
-                    PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
-                }
-                
+
+                PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
+
                 // LW VECTOR POTENTIAL (A)
                 //////////////////////////
                 
                 A = velocity(tau) / c * PHI;
                 
-                // FOURIER SCALAR POTENTIAL (PHI_fourier)
-                /////////////////////////////////////////
-                
                 // FOURIER VECTOR POTENTIAL (A_fourier)
                 ///////////////////////////////////////
                 
-                double k = FREQUENCY / c;
-                vector3 xhat = vector3(1., 0., 0.);
                 complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - FREQUENCY * time)));
                 double realpart = complexterm.real();
                 A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;
+                
+                // PRINT DATA TO FILE
+                /////////////////////
+                
+                if (j == 400){
+                    fprintf(file, "\n%.8e %.8e", r.x, norm(A));
+                }
                 
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
                 double factor = 6.e10;
-                double color = PHI;
+                double color = norm(A);
                 
                 RED = factor * color;
                 GRE = factor * color;
@@ -184,6 +189,7 @@ int main() {
     // Cleanup & Exit
     /////////////////
     
+    fclose(file);
     delete[] data;
     
     return 0;
