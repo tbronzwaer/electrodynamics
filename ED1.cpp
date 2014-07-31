@@ -93,6 +93,31 @@ double ret_time(double t, vector3 r){
     return tau;
 }
 
+// Returns the advanced time at the current position/time. 
+// Uses binary search between t and 2t ??????
+double adv_time(double t, vector3 r){
+    
+    
+    // DOESN'T WORK YET
+    
+    
+    double tau = t * 1.5;   
+    double divider = 4.;
+    
+    // Perform binary search NSTEPS times; accuracy ~t/2^NSTEPS
+    for (int i = 2; i < NSTEPS; i++){
+        if (tau < (t + separation(r, position(tau))/c)){
+            tau += t / divider;
+        }
+        else{
+            tau -= t / divider;
+        }
+        divider *= 2.;
+    }
+    
+    return tau;
+}
+
 // MAIN FUNCTION
 ////////////////
 
