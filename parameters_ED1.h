@@ -22,8 +22,8 @@
 
 const int    WIDTH           = 800;
 const int    HEIGHT          = 600;
-const double SCALE           = 1.0;            // Scale factor
-const double VELOCITY        = 2.5e10;         // Linear velocity, 0.8333 c
+const double SCALE           = 1.0;            // cm; scale factor
+const double VELOCITY        = 2.5e10;         // cm/s Linear velocity, 0.8333 c
 const double ACCELERATION    = 4.e18;          // Used for linear acceleration
 const double FREQUENCY       = 3.e9;
 const double AMPLITUDE       = 10.0;

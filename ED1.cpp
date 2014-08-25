@@ -142,7 +142,7 @@ int main() {
     vector3 *A_field = new vector3[WIDTH * HEIGHT];
     
     // Set initial time
-    double time = 0. * 0.0001;
+    double time = 0.0001;
     
     // MAIN COMPUTATION
     ///////////////////
