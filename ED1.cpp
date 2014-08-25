@@ -136,13 +136,13 @@ int main() {
     double X, Y, tau;
     vector3 r, R;
     double PHI, PHI_fourier;
-    vector3 A, A_fourier, curl_A;
+    vector3 A, A_fourier, B;
     int q = 0;                          // Image counter
     double RED,GRE,BLU;
     vector3 *A_field = new vector3[WIDTH * HEIGHT];
     
     // Set initial time
-    double time = 0.0001;
+    double time = 0. * 0.0001;
     
     // MAIN COMPUTATION
     ///////////////////
@@ -192,6 +192,12 @@ int main() {
                 // COMPUTE B = curl A
                 /////////////////////
                 
+                // Reinitialize B-vector
+                B.x = 0.;
+                B.y = 0.;
+                B.z = 0.;
+                
+                // We ignore the outermost border (b/c of spatial derivative)
                 if (i > 1 && i < (WIDTH-1) && j > 1 && j < (HEIGHT-1)){
                     // Assume d/dz = 0 (we are in the XY-plane and the fields  
                     // are symmetric about this plane)
@@ -205,34 +211,39 @@ int main() {
                     double dAxdy = (A_field[WIDTH * (j+1) + i].x - 
                                     A_field[WIDTH * (j-1) + i].x) / (2.*SCALE);
                     
-                    curl_A.x = dAzdy - 0.;
-                    curl_A.y = 0. - dAzdx;
-                    curl_A.z = dAydx - dAxdy;
-                
+                    // Update B-vector
+                    B.x = dAzdy - 0.;
+                    B.y = 0. - dAzdx;
+                    B.z = dAydx - dAxdy;             
                 }
                 
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
-                double factor = 12.e12;//6.e10;
-                double color = norm(A);
+                double factor = 2.e11;//6.e10;
+                double color = norm(A_field[WIDTH * j + i]);
                 
+                // Draw the norm of A
                 //RED = factor * color;
                 //GRE = factor * color;
                 //BLU = factor * color;
                 
+                // Draw A itself (R = x, G = y, B = z)
                 //RED = factor * abs(A_field[WIDTH * j + i].x);
                 //GRE = factor * abs(A_field[WIDTH * j + i].y);
                 //BLU = factor * abs(A_field[WIDTH * j + i].z);
                 
-                //cout << "\n B.x " << (double) curl_A.x;
-                //cout << "\n B.y " << (double) curl_A.y;
-                //cout << "\n B.z " << (double) curl_A.z;
+                // Draw B = curl A
+                //RED = factor * abs(B.x);
+                //GRE = factor * abs(B.y);
+                //BLU = factor * abs(B.z);
                 
-                RED = factor * abs(curl_A.x);
-                GRE = factor * abs(curl_A.y);
-                BLU = factor * abs(curl_A.z);
+                // Draw norm(B)
+                RED = factor * norm(B);
+                GRE = factor * norm(B);
+                BLU = factor * norm(B);
 
+                // Gamma correction & color clamping
                 RED = 255. * pow(RED, GAMMA);
                 GRE = 255. * pow(GRE, GAMMA);
                 BLU = 255. * pow(BLU, GAMMA);
