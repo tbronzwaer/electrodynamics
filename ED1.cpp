@@ -98,6 +98,9 @@ double ret_time(double t, vector3 r){
 
 int main() {
     
+    // INITIALIZE VARIABLES
+    ///////////////////////
+    
     // RGB array for creating images
     unsigned char* data = new unsigned char[WIDTH * HEIGHT * 3];   
     FILE *file;
@@ -111,6 +114,7 @@ int main() {
     vector3 A, A_fourier;
     int q = 0;                          // Image counter
     double RED,GRE,BLU;
+    vector3 *A_field = new vector3[WIDTH * HEIGHT];
     
     // Set initial time
     double time = 0.0001;
@@ -146,6 +150,7 @@ int main() {
                 ////////////////////////////////////////////////
                 
                 A = velocity(tau) / c * PHI;
+                A_field[i][j] = A;
                 
                 // FOURIER VECTOR POTENTIAL (A_fourier)
                 ///////////////////////////////////////
