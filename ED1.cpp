@@ -136,7 +136,7 @@ int main() {
     double X, Y, tau;
     vector3 r, R;
     double PHI, PHI_fourier;
-    vector3 A, A_fourier;
+    vector3 A, A_fourier, curl_A;
     int q = 0;                          // Image counter
     double RED,GRE,BLU;
     vector3 *A_field = new vector3[WIDTH * HEIGHT];
@@ -150,10 +150,9 @@ int main() {
     // for all time steps...
     for (int t = 0; t < TIMESTEPS; t++){
         
-        // For all pixels...
+        // First pass over all pixels to compute the vector potential...
         for (int j = 0; j < HEIGHT; j++){
-            for (int i = 0; i < WIDTH; i++){
-                
+            for (int i = 0; i < WIDTH; i++){               
                 // COMPUTE POSITION & RETARDED TIME
                 ///////////////////////////////////
 
@@ -175,7 +174,7 @@ int main() {
                 ////////////////////////////////////////////////
                 
                 A = velocity(tau) / c * PHI;
-                A_field[i][j] = A;
+                A_field[WIDTH * j + i] = A;
                 
                 // FOURIER VECTOR POTENTIAL (A_fourier)
                 ///////////////////////////////////////
@@ -183,24 +182,56 @@ int main() {
                 complex<double> complexterm = (-_i_ * exp(_i_ * (k * norm(r) - 
                                               FREQUENCY * time)));
                 double realpart = complexterm.real();
-                A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;
-                
-                // PRINT DATA TO FILE
+                A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;  
+            }      
+        }   
+        
+        // Second pass over all pixels - first we fill A, then we compute curl A
+        for (int j = 0; j < HEIGHT; j++){
+            for (int i = 0; i < WIDTH; i++){
+                // COMPUTE B = curl A
                 /////////////////////
                 
-                if (j == 400){
-                    fprintf(file, "\n%.8e %.8e", r.x, norm(A));
+                if (i > 1 && i < (WIDTH-1) && j > 1 && j < (HEIGHT-1)){
+                    // Assume d/dz = 0 (we are in the XY-plane and the fields  
+                    // are symmetric about this plane)
+                    // We need the following derivatives;
+                    double dAzdx = (A_field[WIDTH * j + (i+1)].z - 
+                                    A_field[WIDTH * j + (i-1)].z) / (2.*SCALE);
+                    double dAzdy = (A_field[WIDTH * (j+1) + i].z - 
+                                    A_field[WIDTH * (j-1) + i].z) / (2.*SCALE);
+                    double dAydx = (A_field[WIDTH * j + (i+1)].y - 
+                                    A_field[WIDTH * j + (i-1)].y) / (2.*SCALE);
+                    double dAxdy = (A_field[WIDTH * (j+1) + i].x - 
+                                    A_field[WIDTH * (j-1) + i].x) / (2.*SCALE);
+                    
+                    curl_A.x = dAzdy - 0.;
+                    curl_A.y = 0. - dAzdx;
+                    curl_A.z = dAydx - dAxdy;
+                
                 }
                 
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
-                double factor = 6.e10;
+                double factor = 12.e12;//6.e10;
                 double color = norm(A);
                 
-                RED = factor * color;
-                GRE = factor * color;
-                BLU = factor * color;
+                //RED = factor * color;
+                //GRE = factor * color;
+                //BLU = factor * color;
+                
+                //RED = factor * abs(A_field[WIDTH * j + i].x);
+                //GRE = factor * abs(A_field[WIDTH * j + i].y);
+                //BLU = factor * abs(A_field[WIDTH * j + i].z);
+                
+                //cout << "\n B.x " << (double) curl_A.x;
+                //cout << "\n B.y " << (double) curl_A.y;
+                //cout << "\n B.z " << (double) curl_A.z;
+                
+                RED = factor * abs(curl_A.x);
+                GRE = factor * abs(curl_A.y);
+                BLU = factor * abs(curl_A.z);
 
                 RED = 255. * pow(RED, GAMMA);
                 GRE = 255. * pow(GRE, GAMMA);
@@ -209,6 +240,14 @@ int main() {
                 data[3 * (WIDTH * j + i) + 0] = min(RED,255.);
                 data[3 * (WIDTH * j + i) + 1] = min(GRE,255.);
                 data[3 * (WIDTH * j + i) + 2] = min(BLU,255.); 
+                
+                // PRINT DATA TO FILE
+                /////////////////////
+                
+                if (j == 400){
+                    fprintf(file, "\n%.8e %.8e", r.x, 
+                            norm(A_field[WIDTH * j + i]));
+                }
             }
         }
         

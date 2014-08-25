@@ -56,11 +56,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/electrodynamics.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ed1.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/electrodynamics.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ed1.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/electrodynamics ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ed1 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/ED1.o: ED1.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -73,7 +73,7 @@ ${OBJECTDIR}/ED1.o: ED1.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/electrodynamics.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ed1.exe
 
 # Subprojects
 .clean-subprojects:
