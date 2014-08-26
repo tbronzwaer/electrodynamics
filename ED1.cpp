@@ -55,8 +55,8 @@ vector3 position(double t){
     //X.x = 0.5 * ACCELERATION * t * t; // Linear
     //X.y = SCALE * AMPLITUDE * sin(FREQUENCY * t); // Vert Osc
     //X.x = 0.;
-    //X.y = VELOCITY * t;
-    X.y = 0.;
+    X.y = VELOCITY * t - VELOCITY * T_INIT - 300.;
+    //X.y = 0.;
     X.z = 0.;
     return X;
 }
@@ -75,8 +75,8 @@ vector3 velocity(double tau){
     //V.x = ACCELERATION * t; // Linear
     //V.y = SCALE * FREQUENCY * AMPLITUDE * cos(FREQUENCY * t); // Vert Osc
     //V.x = 0.;
-    //V.y = VELOCITY;
-    V.y = 0.;
+    V.y = VELOCITY;
+    //V.y = 0.;
     V.z = 0.;
     return V;
 }
@@ -167,7 +167,7 @@ int main() {
     double *PHI_field = new double[WIDTH * HEIGHT];
     
     // Set initial time
-    double time = 0.0 * 0.0001;
+    double time = T_INIT;
     
     // MAIN COMPUTATION
     ///////////////////
@@ -182,7 +182,7 @@ int main() {
 
                 // Position coordinates at each pixel center
                 r.x = SCALE * ((double) i + .5 - WIDTH / 2.);
-                //r.y = SCALE * ((double) j + .5 + 6. * HEIGHT / 1.);
+                //r.y = SCALE * ((double) j + .5 + 3413.15 * HEIGHT / 1.);
                 r.y = SCALE * ((double) j + .5 - HEIGHT / 2.);
                 r.z = 0.;                
                 
@@ -267,7 +267,7 @@ int main() {
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
-                double factor = 2.e13;//6.e10;
+                double factor = 1.25e14;//6.e10;
                 double color = norm(A_field[WIDTH * j + i]);
                 
                 // Draw phi

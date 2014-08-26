@@ -22,16 +22,19 @@
 
 const int    WIDTH           = 800;
 const int    HEIGHT          = 600;
-const double SCALE           = 1.0;            // cm; scale factor
-const double VELOCITY        = 2.5e10;         // cm/s Linear velocity, 0.8333 c
+const double SCALE           = 2.0;            // cm; scale factor
+const double VELOCITY        = 2.448e10;         // cm/s Linear velocity, 0.8333 c
 const double ACCELERATION    = 4.e18;          // Used for linear acceleration
-const double FREQUENCY       = 3.e9;
-const double AMPLITUDE       = 1.;
+const double FREQUENCY       = 1.2e9;
+const double AMPLITUDE       = 2.;
 const double CHARGE          = 4.80320425e-10; // Elementary charge, statcoulomb
 const int    NSTEPS          = 50;             // For binary search (ret. time)
-const int    TIMESTEPS       = 600;
-const double T_INCREMENT     = 5.e-11;
+const int    TIMESTEPS       = 420;
+const double T_INCREMENT     = 8.5e-11;
 const double GAMMA           = 1. / 2.2;
+
+const double T_INIT          = 0.0001;
+
 const std::string OUTPUT_DIR = "C:/output/electrodynamics";
 
 #endif
