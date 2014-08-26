@@ -58,6 +58,15 @@ double norm(const vector3& A){
     return sqrt(dot(A,A));
 }
 
+vector3 normalize(const vector3& A){
+    vector3 N;
+    double A_norm = norm(A);
+    N.x = A.x / A_norm;
+    N.y = A.y / A_norm;
+    N.z = A.z / A_norm;
+    return N;
+}
+
 vector3 cross(const vector3& A, const vector3& B){
     return vector3(A.y * B.z - A.z * B.y,
                    A.z * B.x - A.x * B.z,

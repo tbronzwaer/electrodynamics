@@ -61,9 +61,17 @@ vector3 position(double t){
     return X;
 }
 
-vector3 velocity(double t){
+vector3 velocity(double tau){
+    
+    // If tau - t <= 0, we're asking for velocity before the simulation begins!
+    // And we assume the particle is STATIONARY before t = 0
+    // NOTE: we allow a small tolerance due to the binary search algorithm's
+    // finite precision.
+    if (tau <= 1.e-12)
+        return vector3(0., 0., 0.);
+    
     vector3 V;
-    V.x = -FREQUENCY * AMPLITUDE * sin(FREQUENCY * t); // Horiz Osc
+    V.x = -FREQUENCY * AMPLITUDE * sin(FREQUENCY * tau); // Horiz Osc
     //V.x = ACCELERATION * t; // Linear
     //V.y = SCALE * FREQUENCY * AMPLITUDE * cos(FREQUENCY * t); // Vert Osc
     //V.x = 0.;
@@ -71,6 +79,21 @@ vector3 velocity(double t){
     V.y = 0.;
     V.z = 0.;
     return V;
+}
+
+// We need this to compute the E-field
+vector3 acceleration(double tau){
+    
+    // If tau - t <= 0, we're asking for accel. before the simulation begins!
+    // And we assume the particle is STATIONARY before t = 0
+    if (tau <= 1.e-12)
+        return vector3(0., 0., 0.);
+    
+    vector3 a;
+    a.x = -FREQUENCY * FREQUENCY * AMPLITUDE * cos(FREQUENCY * tau);
+    a.y = 0.;
+    a.z = 0.;
+    return a;
 }
 
 // Returns the retarded time at the current position/time. 
@@ -133,23 +156,24 @@ int main() {
     
     double k = FREQUENCY / c;           // Wave number
     vector3 xhat = vector3(1., 0., 0.);
-    double X, Y, tau;
-    vector3 r, R;
+    double X, Y, tau, gamma;
+    vector3 r, R, R_hat, V, a;
     double PHI, PHI_fourier;
-    vector3 A, A_fourier, B;
+    vector3 A, A_fourier, E, B;         // Quantities of interest
     int q = 0;                          // Image counter
     double RED,GRE,BLU;
     vector3 *A_field = new vector3[WIDTH * HEIGHT];
+    vector3 *E_field = new vector3[WIDTH * HEIGHT];
+    double *PHI_field = new double[WIDTH * HEIGHT];
     
     // Set initial time
-    double time = 0.0001;
+    double time = 0.0 * 0.0001;
     
     // MAIN COMPUTATION
     ///////////////////
     
     // for all time steps...
-    for (int t = 0; t < TIMESTEPS; t++){
-        
+    for (int t = 0; t < TIMESTEPS; t++){        
         // First pass over all pixels to compute the vector potential...
         for (int j = 0; j < HEIGHT; j++){
             for (int i = 0; i < WIDTH; i++){               
@@ -163,17 +187,20 @@ int main() {
                 r.z = 0.;                
                 
                 tau = ret_time(time, r);               
-                R = r - position(tau);      
+                R = r - position(tau);  
+                V = velocity(tau);
+                a = acceleration(tau);
                 
                 // COMPUTE LIÉNARD-WIECHERT SCALAR POTENTIAL (PHI)
                 //////////////////////////////////////////////////
 
-                PHI = CHARGE / (norm(R) - dot(R, velocity(tau))/c);
+                PHI = CHARGE / (norm(R) - dot(R, V)/c);
+                PHI_field[WIDTH * j + i] = PHI;
 
                 // COMPUTE LIÉNARD-WIECHERT VECTOR POTENTIAL (A)
                 ////////////////////////////////////////////////
                 
-                A = velocity(tau) / c * PHI;
+                A = V / c * PHI;
                 A_field[WIDTH * j + i] = A;
                 
                 // FOURIER VECTOR POTENTIAL (A_fourier)
@@ -183,8 +210,28 @@ int main() {
                                               FREQUENCY * time)));
                 double realpart = complexterm.real();
                 A_fourier = xhat * k/norm(r) * CHARGE * AMPLITUDE * realpart;  
+                
+                // COMPUTE ELECTRIC FIELD
+                /////////////////////////
+                
+                R_hat = normalize(R);
+                gamma = 1. / sqrt(1. - norm(V) * norm(V) / (c * c));
+                E = (R_hat - (V/c)) * CHARGE / (gamma * gamma *
+                    pow((1. - dot(R_hat, (V/c))),3.) * norm(R) * norm(R)) + 
+                    (cross(R_hat, cross((R_hat - V/c), a)) / 
+                    (pow((1. - dot(R_hat, (V/c))),3.) * norm(R))) * CHARGE / (c*c);
+                E_field[WIDTH * j + i] = E;
+
+                
             }      
         }   
+        
+        
+        
+        // NOTE - we only need one pass - just compute B from E
+        
+        
+        
         
         // Second pass over all pixels - first we fill A, then we compute curl A
         for (int j = 0; j < HEIGHT; j++){
@@ -220,8 +267,13 @@ int main() {
                 // COMPUTE PIXEL COLOR (PLOT)
                 /////////////////////////////
                 
-                double factor = 2.e11;//6.e10;
+                double factor = 2.e13;//6.e10;
                 double color = norm(A_field[WIDTH * j + i]);
+                
+                // Draw phi
+                //RED = factor * PHI_field[WIDTH * j + i];
+                //GRE = factor * PHI_field[WIDTH * j + i];
+                //BLU = factor * PHI_field[WIDTH * j + i];
                 
                 // Draw the norm of A
                 //RED = factor * color;
@@ -233,24 +285,43 @@ int main() {
                 //GRE = factor * abs(A_field[WIDTH * j + i].y);
                 //BLU = factor * abs(A_field[WIDTH * j + i].z);
                 
-                // Draw B = curl A
-                //RED = factor * abs(B.x);
-                //GRE = factor * abs(B.y);
-                //BLU = factor * abs(B.z);
+                /*
+                // Draw E 
+                //RED = 0.5 + factor * E_field[WIDTH * j + i].x;
+                //GRE = 0.5 + factor * E_field[WIDTH * j + i].y;
+                //BLU = 0.5 + factor * E_field[WIDTH * j + i].z;
+                //*/
+                
+                /*
+                // Draw B
+                RED = 0.5 + factor * B.x;
+                GRE = 0.5 + factor * B.y;
+                BLU = 0.5 + factor * B.z;
+                //*/
+                
+                ///*
+                // Draw E + B
+                RED = 0.5 * (0.5 + factor * E_field[WIDTH * j + i].x + 
+                             0.5 + factor * B.x);
+                GRE = 0.5 * (0.5 + factor * E_field[WIDTH * j + i].y + 
+                             0.5 + factor * B.y);
+                BLU = 0.5 * (0.5 + factor * E_field[WIDTH * j + i].z + 
+                             0.5 + factor * B.z);
+                //*/
                 
                 // Draw norm(B)
-                RED = factor * norm(B);
-                GRE = factor * norm(B);
-                BLU = factor * norm(B);
+                //RED = factor * norm(B);
+                //GRE = factor * norm(B);
+                //BLU = factor * norm(B);
 
                 // Gamma correction & color clamping
                 RED = 255. * pow(RED, GAMMA);
                 GRE = 255. * pow(GRE, GAMMA);
                 BLU = 255. * pow(BLU, GAMMA);
 
-                data[3 * (WIDTH * j + i) + 0] = min(RED,255.);
-                data[3 * (WIDTH * j + i) + 1] = min(GRE,255.);
-                data[3 * (WIDTH * j + i) + 2] = min(BLU,255.); 
+                data[3 * (WIDTH * j + i) + 0] = max(0., min(RED,255.));
+                data[3 * (WIDTH * j + i) + 1] = max(0., min(GRE,255.));
+                data[3 * (WIDTH * j + i) + 2] = max(0., min(BLU,255.)); 
                 
                 // PRINT DATA TO FILE
                 /////////////////////
@@ -263,6 +334,9 @@ int main() {
         }
         
         write_image(data, q);
+        
+        cout << "\nOn time step " << (int) q << " of " << (int) (TIMESTEPS-1);
+        
         q++;       
         time += T_INCREMENT;
     }

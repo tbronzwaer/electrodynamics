@@ -6,8 +6,8 @@
  * 
  * This header file contains the following utility functions for 3DPauli:
  * 
- * Complex to RGB conversion
- * BMP image writing routine for Windows
+ * Complex to RGB conversion - for plotting complex functions
+ * BMP image writing routine for Windows -> MUST BE UPDATED TO TGA FOR ALL PLATF
  */
 
 #ifndef UTILITIES_H
@@ -21,11 +21,10 @@
 #include <fstream>
 #include "parameters_ED1.h"
 
-
 using namespace std;
 
+// Returns RGB values for a given complex number
 void complex_to_rgb(const complex<double> C, double RGB[]){
-    // PLOT THE COMPLEX NUMBER C  
     double magnitude = abs(C);
     double phase = arg(C);
 
@@ -37,6 +36,8 @@ void complex_to_rgb(const complex<double> C, double RGB[]){
     magnitude /= 1.0;
 
     // HSV to RGB method from Wikipedia 
+    ///////////////////////////////////
+    
     double Hprime = phase * 6.;	
     double Ch = magnitude * 1.;	
     double X = Ch * (1. - abs(fmod(Hprime, 2.) - 1.));
@@ -58,7 +59,9 @@ void complex_to_rgb(const complex<double> C, double RGB[]){
         { RGB[0] = Ch; RGB[1] = 0.; RGB[2] = X; }
     else 
         { RGB[0] = 0.; RGB[1] = 0.; RGB[2] = 0.; }
-    // END <- material from Wikipedia
+    
+    // END OF MATERIAL FROM WIKIPEDIA
+    /////////////////////////////////
 }
 
 int write_image(unsigned char *data, int imagecounter){

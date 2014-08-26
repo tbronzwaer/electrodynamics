@@ -65,7 +65,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/ed1.exe: ${OBJECTFILES}
 ${OBJECTDIR}/ED1.o: ED1.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ED1.o ED1.cpp
+	$(COMPILE.cc) -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ED1.o ED1.cpp
 
 # Subprojects
 .build-subprojects:
